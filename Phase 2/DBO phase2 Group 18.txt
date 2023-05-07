@@ -1,0 +1,107 @@
+
+REAL ESTATE MANAGEMENT 
+PHASE 2
+
+GROUP 18  :  Sukhmani Sandhu A20513431
+		 Gayathri Chekuri A20526650
+		 Manoj Kumar Yepuri A20526648
+
+
+
+
+create table login (userID varchar(50) primary key, 
+                    password varchar(20) not null);
+
+create table user(email varchar(50) primary key,
+                  name varchar(30) NOT NULL,
+                  type ENUM('Renter', 'Agent') NOT NULL,
+                  foreign key(email) references login(userID));
+
+create table address(addressID varchar(20) NOT NULL,
+                     email varchar(50) NOT NULL,
+                     city varchar(10) NOT NULL, 
+                     state varchar(20) NOT NULL,
+                     zipcode varchar(10) NOT NULL,
+                     foreign key(email) references user(email));
+
+create table renter(RID varchar(50) primary key NOT NULL,
+                    name varchar(30) NOT NULL,
+                    move_in_date Date NOT NULL,
+                    preferred_location varchar(20) NOT NULL,
+                    budget int NOT NULL);
+
+create table agent(agID varchar(50) primary key, 
+                   name varchar(30) NOT NULL,
+                   job_title varchar(20) NOT NULL,
+                   agency_name varchar(25) NOT NULL,
+                   phone varchar(13) NOT NULL);
+
+create table property(pID int AUTO_INCREMENT primary key,
+                      agid varchar(50) NOT NULL,
+                      rid varchar(50) NOT NULL,
+                      type varchar(20) NOT NULL,
+                      location varchar(20) NOT NULL,
+                      city varchar(10) NOT NULL,
+                      state varchar(15) NOT NULL,
+                      zipcode varchar(10) NOT NULL,
+                      description varchar(20),
+                      price int NOT NULL,
+                      availability Date,
+                      foreign key(agID) references agent(agID),
+                      foreign key(rID) references renter(rID));
+
+create table house(pID varchar(10) primary key,
+                   location varchar(20) NOT NULL,
+                   number_of_rooms int NOT NULL,
+                   sq_foot int NOT NULL,
+                   foreign key(pID) references property(pID));
+                   
+create table appartments(pID varchar(10) primary key, 
+                         location varchar(20) NOT NULL,
+                         number_of_rooms int NOT NULL,
+                         sq_foot int NOT NULL, 
+                         building type varchar(10) NOT NULL,
+                         foreign key(pID) references property(pID));
+
+create table commercial_Buildings(pID varchar(10) primary key,
+                                  location varchar(20) NOT NULL,
+                                  sq_foot int NOT NULL,
+                                  business_type varchar(10) NOT NULL,
+                                  foreign key(pID) references property(pID));
+
+create table booking(bID int AUTO_INCREMENT primary key,
+                     email varchar(50) primary key,
+                     pID varchar(10) primary key,
+                     name varchar(25) NOT NULL,
+                     creditcard_number numeric(20) NOT NULL,
+                     booking_amount int NOT NULL,
+                     foreign key(email) references renter(rID),
+                     foreign key(pID) references property(pID));
+
+create table rewards(email varchar(50) primary key,
+                     bID int NOT NULL,
+                     name varchar(25) NOT NULL,
+                     reward_point int NOT NULL,
+                     foreign key(email) references renter(rID),
+                     foreign key(bID) references booking(bID));
+
+create table crediCard(rID varchar(50) primary key,
+                       credicard_number numeric(20) NOT NULL,
+                       name varchar(20) NOT NULL,
+                       expiry_DATE DATE NOT NULL,
+                       cvv int NOT NULL,
+                       Billing_address varchar(100) NOT NULL,
+                       foreign key(rID) references renter(rID));
+
+create table additional_info(pID int primary key,
+                             crimeRate varchar(10) primary key,
+                             schools_nearby varchar(20) primary key,
+                             foreign key(pID) references property(pID));
+
+create table neighbourhood_info(pID int primary key,
+                                land varchar(10) primary key,
+                                vacation_homes varchar(30) primary key,
+                                foreign key(pID) references property(pID));
+
+                         
+
